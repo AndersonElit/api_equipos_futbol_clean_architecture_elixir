@@ -14,6 +14,15 @@ defmodule App.Infrastructure.Adapters.Repository.Equipo.EquipoDataRepository do
     end
   end
 
+  def actualizar_equipo(entity) do
+    id = Map.get(entity, :id)
+    equipo_data = Repo.get!(EquipoData, id)
+    changeset = EquipoData.changeset(equipo_data, %{nombre: Map.get(entity, :nombre), abreviatura: Map.get(entity, :abreviatura)})
+    equipo_actualizado = Repo.update(changeset)
+    {:ok, %App.Infrastructure.Adapters.Repository.Equipo.Data.EquipoData{id: id, nombre: nombre, abreviatura: abreviatura}} = equipo_actualizado
+    {:ok, %Equipo{id: id, nombre: nombre, abreviatura: abreviatura}}
+  end
+
   defp to_entity(nil), do: nil
   defp to_entity(data) do
     struct(Equipo, data |> Map.from_struct)

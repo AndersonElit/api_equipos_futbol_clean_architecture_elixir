@@ -6,4 +6,6 @@ defmodule App.Domain.Behaviours.EquipoBehaviour do
 
   @callback buscar_equipo_por_id(number())::{:ok, Equipo.t()} | {:error, atom()}
 
+  @callback actualizar_equipo(Equipo.t())::{:ok, Equipo.t()} | {:error, atom()}
+
 end

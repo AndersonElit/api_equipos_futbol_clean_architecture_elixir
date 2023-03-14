@@ -21,4 +21,14 @@ require Logger
     end
   end
 
+  def actualizar_equipo(info) do
+
+    with {:ok, equipo} <- Equipo.new(Map.get(info, :id), Map.get(info, :nombre), Map.get(info, :abreviatura)),
+          {:ok, equipo_actualizado} <- @equipos_behaviour.actualizar_equipo(equipo) do
+      Logger.info("Nuevo equipo #{inspect(equipo_actualizado)}")
+      {:ok, equipo_actualizado}
+    end
+
+  end
+
 end

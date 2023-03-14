@@ -51,6 +51,20 @@ defmodule App.Infrastructure.EntryPoint.ApiRest do
     EquipoUseCase.buscar_equipo_por_id(id) |> build_response(conn)
   end
 
+  #Actualizar equipo
+  put "/app/api/actualizar-equipo/" do
+    body = Plug.Conn.read_body(conn)
+    {:ok, "", %Plug.Conn{params: params}} = body
+    case actualizar_equipo(params) do
+      {:ok, equipo} -> equipo |> build_response(conn)
+      {:error, error} -> %{status: 500, body: error} |> build_response(conn)
+    end
+  end
+
+  defp actualizar_equipo(equipo_params) do
+    EquipoUseCase.actualizar_equipo(%Equipo{id: equipo_params["id"], nombre: equipo_params["nombre"], abreviatura: equipo_params["abreviatura"]})
+  end
+
   def build_response(%{status: status, body: body}, conn) do
     conn
     |> put_resp_content_type("application/json")
